@@ -1,3 +1,33 @@
+/*Ln 159: I don't fully understand the purpose of int clear.
+
+Ln 178: I want to add an if statement that 
+if(hP = 5 && j >= 7){
+j--;{
+if(hP = 4 && j >= 8){
+j--;
+{if(hP = 3 && j>= 9{
+j--; etc.
+
+something of this sort can be used to prevent the assignment of the hPs of a ship to start on one row and finish on another.
+
+By this I mean:
+
+hP = 5 && [][ j ] = 7;
+
+And it ends up placing the hP for the carrier like this:
+     1 2 3 4 5 6 7 8 9
+1                    CCC
+2   CC
+3
+4
+5
+6
+7
+8
+9
+*/
+
+
 #define _CRT_SECURE_NO_WARNINGS
 
 
