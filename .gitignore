@@ -1,32 +1,202 @@
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+#define _CRT_SECURE_NO_WARNINGS
 
-# Precompiled Headers
-*.gch
-*.pch
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
+#include <string.h>
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+#define PAUSE system("pause")
+#define CLS system("cls")
+#define FLUSH fflush(stdin)
 
-# Debug files
-*.dSYM/
+#define CARRIER 5
+#define BATTLESHIP 4
+#define DESTROYER 3
+#define SUB 3
+#define PATROL 2
+#define COL 10
+#define ROW 10
+
+
+void placeRight(char a[][COL], int hP , char symbol); // This will need an X and Y coordinate then check to see if there is space for the ship to be placed horizontally
+void placeDown(int a[][COL], int hP, char symbol); // This will need an X and Y coordinate then check to see if there is space for the ship to be placed vertically
+void displayGame(char a[][COL], int b[][COL]); // This will display the game board keeping in constant contact with the 2D array holding the ship data.
+void placeShips(char a[][COL], int hP, char symbol); // This will contain both the placeRight and placeDown funcitons generating a random number for the X and Y as well as 
+				   // a random number for deciding to placeRight or Down. 
+int charConvert(); // This function will take char input from the user and convert it into an int
+void topScores(); // This will keep track of the top 10 players of the game based on missles used. 
+int missleCount(); // This will keep track of missles used. 
+
+
+
+typedef struct
+{
+	char *name;
+	char symbol;
+	int hP;
+}SHIP;
+
+
+main()
+{
+	char game[ROW][COL];
+	int ships[ROW][COL] = {0};
+	int missles = 0;
+	
+	SHIP carrier;
+	carrier.hP = CARRIER;
+	carrier.name = "Carrier";
+	carrier.symbol = 'C';
+	SHIP battleship;
+	battleship.hP = BATTLESHIP;
+	battleship.name = "Battleship";
+	battleship.symbol = 'B';
+	SHIP destroyer;
+	destroyer.hP = DESTROYER;
+	destroyer.name = "Destroyer";
+	destroyer.symbol = 'D';
+	SHIP sub;
+	sub.hP = SUB;
+	sub.name = "Submarine";
+	sub.symbol = 'S';
+	SHIP patrol;
+	patrol.hP = PATROL;
+	patrol.name = "Patrol Boat";
+	patrol.symbol = 'P';
+
+
+	// Game Starts with empty game board for now...
+	displayGame(game, ships);
+	PAUSE;
+	// press enter and watch it place the ships 
+
+	placeShips(game, carrier.hP, carrier.symbol);
+	placeShips(game, battleship.hP, battleship.symbol);
+	placeShips(game, destroyer.hP, destroyer.symbol);
+	placeShips(game, sub.hP, sub.symbol);
+	placeShips(game, patrol.hP, patrol.symbol);
+
+	displayGame(game, ships);
+
+
+
+	PAUSE;
+}// end main
+
+void placeRight(char a[][COL], int hP, char symbol)
+{
+	time_t t;
+	srand((unsigned)time(&t));
+	int i;
+	int j;
+	int y;
+	int clear;
+	int count;
+
+	do {
+		i = rand() % 10;
+		j = rand() % 10;
+		y = j;
+		count = 0;
+		clear = 0;
+
+		if (j + hP <= 10)
+		{			
+				for (count; count < hP; count++)
+				{
+					if (a[i][j] == 'C' && a[i][j] == 'B' && a[i][j] == 'D' && a[i][j] == 'S' && a[i][j] == 'P')
+						break;
+					if (a[i][j] != 'C' && a[i][j] != 'B' && a[i][j] != 'D' && a[i][j] != 'S' && a[i][j] != 'P')
+						clear++;
+					j++;
+				}//end for			
+		}//end if
+	} while (clear < hP);
+
+	count = 0;
+	j = y;
+
+	for (count; count < hP; count++)
+	{
+		a[i][j] = symbol;
+		j++;
+	}// End for. 
+}// End placeRight
+
+void displayGame(char a[][COL], int b[][COL])
+{
+	int i;
+	int j;
+
+	for (i = 0; i < ROW; i++)
+	{
+		for (j = 0; j < COL; j++)
+		{
+			if (a[i][j] == 'B' || a[i][j] == 'C' || a[i][j] == 'D' || a[i][j] == 'S' || a[i][j] == 'P')
+			{	
+				printf("%c ", a[i][j]);
+			}//end if
+			else
+			{
+				a[i][j] = '.';
+				printf("%c ", a[i][j]);
+			}//end else
+		}//end for 
+		printf("\n");
+	}// end for
+} // end displayGame
+
+void placeDown(char a[][COL], int hP, char symbol)
+{
+	time_t t;
+	srand((unsigned)time(&t));
+	int i;
+	int j;
+	int x;
+	int clear;
+	int count;
+
+	do {
+		i = rand() % 10;
+		j = rand() % 10;
+		x = i;
+		count = 0;
+		clear = 0;
+
+		if (i + hP <= 10)
+		{						
+				for (count; count < hP; count++)
+				{
+					if (a[i][j] == 'C' && a[i][j] == 'B' && a[i][j] == 'D' && a[i][j] == 'S' && a[i][j] == 'P')
+						break;
+					if (a[i][j] != 'C' && a[i][j] != 'B' && a[i][j] != 'D' && a[i][j] != 'S' && a[i][j] != 'P')
+						clear++;
+					i++;
+				}// end for							
+		}// end if
+	} while (clear < hP);
+
+	count = 0;
+	i = x;
+	for (count; count < hP; count++)
+	{
+		a[i][j] = symbol;
+		i++;
+	}// end for
+}// End placeDown
+
+void placeShips(char a[][COL], int hP, char symbol)
+{
+
+
+	int pickOne = rand() % 2;		
+		if (pickOne == 0)
+			placeDown(a, hP, symbol);
+		if (pickOne == 1)
+			placeRight(a, hP, symbol);
+	
+
+}// End placeShips
