@@ -156,7 +156,7 @@ void placeDown(char a[][COL], int hP, char symbol)
 	int i;
 	int j;
 	int x;
-	int clear;
+	int clear; //what does int clear do?
 	int count;
 
 	do {
@@ -175,6 +175,7 @@ void placeDown(char a[][COL], int hP, char symbol)
 					if (a[i][j] != 'C' && a[i][j] != 'B' && a[i][j] != 'D' && a[i][j] != 'S' && a[i][j] != 'P')
 						clear++;
 					i++;
+					if(
 				}// end for							
 		}// end if
 	} while (clear < hP);
